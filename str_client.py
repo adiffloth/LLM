@@ -14,8 +14,9 @@ def generate_data_chunks():
         time.sleep(0.1)
 
 def run():
+    server_ip = input("Enter the server IP address: ") # Get the server IP address from the user
     # Open a gRPC channel to the server
-    with grpc.insecure_channel('localhost:50051') as channel:
+    with grpc.insecure_channel(f'{server_ip}:50051') as channel:
         stub = streaming_pb2_grpc.DataProcessingServiceStub(channel)
         
         # Send data stream and receive occasional responses
