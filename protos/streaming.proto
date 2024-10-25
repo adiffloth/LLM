@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package streaming;
+
+// Service definition with bidirectional streaming
+service DataProcessingService {
+  rpc ProcessDataStream (stream DataChunk) returns (stream ServerResponse);
+}
+
+// Message the client will send in the stream
+message DataChunk {
+  string content = 1;
+  int32 sequence_number = 2;
+}
+
+// Message the server will send back
+message ServerResponse {
+  string message = 1;
+  int32 processed_sequence = 2;
+}
