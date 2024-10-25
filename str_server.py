@@ -13,16 +13,16 @@ class DataProcessingServiceServicer(streaming_pb2_grpc.DataProcessingServiceServ
             print(f"Received chunk {data_chunk.sequence_number}: {data_chunk.content}")
             
             # Occasionally send a response back to the client
-            if data_chunk.sequence_number % 3 == 0:  # Respond every 5 messages
-                yield streaming_pb2.ServerResponse(
-                    message=f"Processed 3 chunks {data_chunk.sequence_number}",
-                    processed_sequence=data_chunk.sequence_number
-                )
-            if data_chunk.sequence_number % 5 == 0:  # Respond every 5 messages
-                yield streaming_pb2.ServerResponse(
-                    message=f"Processed 5 chunks {data_chunk.sequence_number}",
-                    processed_sequence=data_chunk.sequence_number
-                )
+            # if data_chunk.sequence_number % 3 == 0:  # Respond every 5 messages
+            #     yield streaming_pb2.ServerResponse(
+            #         message=f"Processed 3 chunks {data_chunk.sequence_number}",
+            #         processed_sequence=data_chunk.sequence_number
+            #     )
+            # if data_chunk.sequence_number % 5 == 0:  # Respond every 5 messages
+            #     yield streaming_pb2.ServerResponse(
+            #         message=f"Processed 5 chunks {data_chunk.sequence_number}",
+            #         processed_sequence=data_chunk.sequence_number
+            #     )
                 # time.sleep(0.1)  # Simulate some processing time
 
 # Start the server
