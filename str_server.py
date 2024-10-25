@@ -11,6 +11,10 @@ class DataProcessingServiceServicer(streaming_pb2_grpc.DataProcessingServiceServ
         for i, data_chunk in enumerate(request_iterator):
             # Simulate processing the incoming data chunk
             print(f"Received chunk {data_chunk.sequence_number}: {data_chunk.content}")
+            yield streaming_pb2.ServerResponse(
+                    message=f"Processed {data_chunk.content}",
+                    processed_sequence=data_chunk.sequence_number
+                )
             
             # Occasionally send a response back to the client
             # if data_chunk.sequence_number % 3 == 0:  # Respond every 5 messages
