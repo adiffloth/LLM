@@ -3,6 +3,7 @@ import streaming_pb2
 import streaming_pb2_grpc
 import time
 import sys
+from concurrent.futures import ThreadPoolExecutor
 
 def generate_data_chunks(client_id):
     # Simulate sending a stream of data
@@ -14,11 +15,7 @@ def generate_data_chunks(client_id):
         )
         time.sleep(1)
 
-def run():
-    # server_ip = input("Enter the server IP address: ") # Get the server IP address from the user
-    # client_id = input("Enter the client ID: ") # Get the client ID from the user
-    server_ip = sys.argv[1]
-    client_id = sys.argv[2]
+def run_client(server_ip, client_id):
     # Open a gRPC channel to the server
     with grpc.insecure_channel(f'{server_ip}:50051') as channel:
         stub = streaming_pb2_grpc.DataProcessingServiceStub(channel)
@@ -27,8 +24,23 @@ def run():
         response_iterator = stub.ProcessDataStream(generate_data_chunks(client_id))
         
         for response in response_iterator:
-            print(f"Response: {response.message}, {response.processed_sequence}")
+            print(f"Client {client_id} Response: {response.message}, {response.processed_sequence}")
             print('---')
 
+def main():
+    server_ip = sys.argv[1]  # Get the server IP address from command-line arguments
+    num_clients = int(sys.argv[2])  # Number of clients to start
+
+    # Use ThreadPoolExecutor to manage multiple client threads
+    with ThreadPoolExecutor(max_workers=num_clients) as executor:
+        futures = []
+        for i in range(num_clients):
+            client_id = f"client_{i + 1}"
+            futures.append(executor.submit(run_client, server_ip, client_id))
+
+        # Wait for all threads to complete
+        for future in futures:
+            future.result()
+
 if __name__ == "__main__":
-    run()
+    main()
