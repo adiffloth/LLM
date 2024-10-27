@@ -6,9 +6,10 @@ import time
 def generate_data_chunks(client_id):
     # Simulate sending a stream of data
     for i in range(1, 21):  # Send 20 chunks of data
-        print(f'Sending chunk {i}')
+        msg = f'{client_id} - {i}'
+        print(f'Sending chunk {msg}')
         yield streaming_pb2.DataChunk(
-            content=f"Client {client_id} sent chunk {i}",
+            content=msg,
             sequence_number=i
         )
         time.sleep(1)
@@ -24,7 +25,7 @@ def run():
         response_iterator = stub.ProcessDataStream(generate_data_chunks(client_id))
         
         for response in response_iterator:
-            print(f"Received response from server: {response.message}, processed sequence: {response.processed_sequence}")
+            print(f"Response: {response.message}, {response.processed_sequence}")
 
 if __name__ == "__main__":
     run()

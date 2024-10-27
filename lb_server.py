@@ -10,7 +10,7 @@ class DataProcessingServiceServicer(streaming_pb2_grpc.DataProcessingServiceServ
     def ProcessDataStream(self, request_iterator, context):
         for i, data_chunk in enumerate(request_iterator):
             # Simulate processing the incoming data chunk
-            print(f"Received chunk {data_chunk.sequence_number}: {data_chunk.content}")
+            print(f"Received {data_chunk.content}, seq: {data_chunk.sequence_number}")
             yield streaming_pb2.ServerResponse(
                     message=f"Processed {data_chunk.content}",
                     processed_sequence=data_chunk.sequence_number
