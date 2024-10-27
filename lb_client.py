@@ -6,12 +6,12 @@ import time
 def generate_data_chunks(client_id):
     # Simulate sending a stream of data
     for i in range(1, 21):  # Send 20 chunks of data
-        msg = f'{client_id} - {i}'
-        print(f'Sending chunk {msg}')
+        print(f'Sending chunk {i}')
         yield streaming_pb2.DataChunk(
-            content=msg,
+            content=client_id,
             sequence_number=i
         )
+        print('---')
         time.sleep(1)
 
 def run():
