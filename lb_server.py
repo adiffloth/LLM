@@ -18,9 +18,10 @@ class DataProcessingServiceServicer(streaming_pb2_grpc.DataProcessingServiceServ
                 current_counter = self.counter
 
             # Simulate processing the incoming data chunk
-            print(f"{self.counter} Received seq {data_chunk.sequence_number} from client {data_chunk.content}")
+            # print(f"{self.counter} Received seq {data_chunk.sequence_number} from client {data_chunk.content}")
+            print(f"{self.counter} recv {data_chunk.content}-{data_chunk.sequence_number}")
             yield streaming_pb2.ServerResponse(
-                    message=f"Processed {data_chunk.content}-{data_chunk.sequence_number}",
+                    message=f"{data_chunk.content}-{data_chunk.sequence_number}",
                     processed_sequence=data_chunk.sequence_number
                 )
 
